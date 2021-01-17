@@ -1,9 +1,11 @@
+
+
  # _Key / Password encryption_
 
 ---
-_As we know, we have multiple password in for many different account and environments. 
-This is about how can we secure those password and store them in encrypted format in a git repo itself.
-While doing online research about **how can we store passwords in our git repository and not expose to others in raw format**,  i have gone throught below links ._
+_As we know, we have multiple passwords for many different accounts and environments. 
+This is about how can we secure those passwords and store them in encrypted format in a git repo itself.
+While doing online research about **how can we store passwords in our git repository and not expose to others in raw format**, I have gone through the below links ._
 
 - _[How to Generate/Encrypt/Decrypt Random Passwords in Linux](https://www.tecmint.com/generate-encrypt-decrypt-random-passwords-in-linux/)_
 - _[Encrypt files using AES with OPENSSL](https://medium.com/@kekayan/encrypt-files-using-aes-with-openssl-dabb86d5b748)_
@@ -13,7 +15,7 @@ While doing online research about **how can we store passwords in our git reposi
 ---
 
 ## OpenSSL Encryption
-_To Understand What is OpenSSL Encryption is,  Please vist to this [link](https://courses.csail.mit.edu/6.857/2018/project/Ainane-Barrett-Johnson-Vivar-OpenSSL.pdf). Author has explained about it in most understandable way possible._ 
+_To Understand What is OpenSSL Encryption is,  Please visit this [link](https://courses.csail.mit.edu/6.857/2018/project/Ainane-Barrett-Johnson-Vivar-OpenSSL.pdf). The author has explained it in the most understandable way possible._ 
 
 ## Example 1
 
@@ -22,22 +24,22 @@ Lets say that we have three environments
   - uat 
   - prod 
 
-To use a web-service in each environment, we want to use a **API-KEY** while doing the execution. We are suppose to use different passwords for each environment. 
-We don't want to keep same **API-KEY** for each environment.
+To use a web-service in each environment, we want to use an **API-KEY** while doing the execution. We are supposed to use different passwords for each environment. 
+We don't want to keep the same **API-KEY** for each environment.
 
-What options do we have . 
+What options do we have? 
 
-- Store the Credentials in some S3 Bucket as file and encrypt it and restrct its access by iam roles. 
+- Store the Credentials in some S3 Bucket as a file and encrypt it and restrict its access by IAM roles. 
 - use AWS Secrets
 - use AWS parameters
-- use ENV variable in each environment
+- use the ENV variable in each environment
 - Store the credentials in [Jenkins Credentials plugin](https://plugins.jenkins.io/credentials/)
-- Store the credentials in [Vault](https://www.vaultproject.io/) like application.
+- Store the credentials in [Vault](https://www.vaultproject.io/) like the application.
 - Store the credentials in encrypted files inside the git repository. 
 
 
-I may have listed few options here but there can be more options available, i appologies in advance if it does not covers all the approach. 
-I know each cloud provider has its secrets management tool/service since i mostly work AWS that is why we have AWS related options.
+I may have listed a few options here but there can be more options available, I apologize in advance if it does not covers all the approaches. 
+I know each cloud provider has its secrets management tool/service since I mostly work AWS that is why we have AWS related options.
 
 
 I will be concentrating the last option here, **"Store the credentials in encrypted files inside the git repository"**
@@ -50,18 +52,18 @@ Lets say that our web-service **API-KEY** String are below for each environments
 - UAT KEY `ILoveMyDreamsUat`
 - PROD KEY `ILoveMyDreamsProd`
 
-We want to store these **API-KEY** for each environemnt in repository. Lets See how can we achive that.
+We want to store these **API-KEY** for each environment in a repository. Let us see how can we achieve that.
 
-**How to Encrypt the password and store in file ?**
+**How to Encrypt the password and store it in a file ?**
 
 ```
-# To Genrate Dev Environment encrypted passowrd file. 
+# To Generate Dev Environment encrypted password file. 
 echo "ILoveMyDreamsDev" |  openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -out ./secrets/app1_dev.key
 
-# To Genrate Uat Environment encrypted passowrd file. 
+# To Generate Uat Environment encrypted password file. 
 echo "ILoveMyDreamsUat" |  openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -out ./secrets/app1_uat.key
 
-# To Genrate Prod Environment encrypted passowrd file. 
+# To Generate Prod Environment encrypted password file. 
 echo "ILoveMyDreamsProd" |  openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}   -out ./secrets/app1_prod.key
 
 ```
@@ -69,26 +71,26 @@ echo "ILoveMyDreamsProd" |  openssl enc -aes-256-cbc -pass pass:${SomethingReall
 ---
 
 
-**How to Decrypt the above encrypted file to retrive the password ?**
+**How to Decrypt the above-encrypted file to retrieve the password ?**
 
 ```
-# To retrive the Dev Environment passowrd from encrypted file. 
+# To retrieve the Dev Environment password from the encrypted file. 
 WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_dev.key)
 echo $WEBAPIKEY
 ILoveMyDreamsDev
 
-# To retrive the Uat Environment passowrd from encrypted file. 
+# To retrieve the Uat Environment password from an encrypted file. 
 WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_uat.key)
 echo $WEBAPIKEY
 ILoveMyDreamsUat
 
-# To retrive the Prod Environment passowrd from encrypted file. 
+# To retrieve the Prod Environment password from the encrypted file. 
 WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_prod.key)
 echo $WEBAPIKEY
 ILoveMyDreamsProd
 ```
 
-In above example we can manage the secrets via version control and need not to manage multiple passwords in jenkins credentials plugins but can use single password ${SomethingReallySecret} in there to get all the encrypted details. 
+In the above example, we can manage the secrets via version control and need not manage multiple passwords in Jenkins credentials plugins but can use a single password **${SomethingReallySecret}** in there to get all the encrypted details. 
 
 
 Command related details you can get from  _[Encrypt files using AES with OPENSSL](https://medium.com/@kekayan/encrypt-files-using-aes-with-openssl-dabb86d5b748)_.
