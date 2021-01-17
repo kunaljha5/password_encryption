@@ -3,7 +3,7 @@
 ---
 _As we know, we have multiple password in for many different account and environments. 
 This is about how can we secure those password and store them in encrypted format in a git repo itself.
-While doing online research about **how can we store passwords in our git repository and not expose to others in raw format**, found many online links but below links can give us better understanding of it._
+While doing online research about **how can we store passwords in our git repository and not expose to others in raw format**,  i have gone throught below links ._
 
 - _[How to Generate/Encrypt/Decrypt Random Passwords in Linux](https://www.tecmint.com/generate-encrypt-decrypt-random-passwords-in-linux/)_
 - _[Encrypt files using AES with OPENSSL](https://medium.com/@kekayan/encrypt-files-using-aes-with-openssl-dabb86d5b748)_
