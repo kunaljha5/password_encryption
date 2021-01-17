@@ -75,15 +75,17 @@ echo "ILoveMyDreamsProd" |  openssl enc -aes-256-cbc -pass pass:${SomethingReall
 # To retrive the Dev Environment passowrd from encrypted file. 
 WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_dev.key)
 echo $WEBAPIKEY
+ILoveMyDreamsDev
 
 # To retrive the Uat Environment passowrd from encrypted file. 
 WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_uat.key)
 echo $WEBAPIKEY
+ILoveMyDreamsUat
 
 # To retrive the Prod Environment passowrd from encrypted file. 
 WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_prod.key)
 echo $WEBAPIKEY
-
+ILoveMyDreamsProd
 ```
 
 In above example we can manage the secrets via version control and need not to manage multiple passwords in jenkins credentials plugins but can use single password ${SomethingReallySecret} in there to get all the encrypted details. 
