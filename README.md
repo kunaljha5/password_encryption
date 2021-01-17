@@ -31,7 +31,7 @@ What options do we have .
 - use AWS Secrets
 - use AWS parameters
 - use ENV variable in each environment
-- Store the credentials in Jenkins Credentials plugin
+- Store the credentials in [Jenkins Credentials plugin](https://plugins.jenkins.io/credentials/)
 - Store the credentials in [Vault](https://www.vaultproject.io/) like application.
 - Store the credentials in encrypted files inside the git repository. 
 
@@ -47,7 +47,46 @@ I will be concentrating the last option here, **"Store the credentials in encryp
 
 Lets say that our web-service **API-KEY** String are below for each environments: 
 - DEV KEY `ILoveMyDreamsDev`
-- UAT KEY `ILoveMyDreamsUAT`
-- PROD KEY `ILoveMyDreamsPROD`
+- UAT KEY `ILoveMyDreamsUat`
+- PROD KEY `ILoveMyDreamsProd`
 
 We want to store these **API-KEY** for each environemnt in repository. Lets See how can we achive that.
+
+**How to Encrypt the password and store in file ?**
+
+```
+# To Genrate Dev Environment encrypted passowrd file. 
+echo "ILoveMyDreamsDev" |  openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -out ./secrets/app1_dev.key
+
+# To Genrate Uat Environment encrypted passowrd file. 
+echo "ILoveMyDreamsUat" |  openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -out ./secrets/app1_uat.key
+
+# To Genrate Prod Environment encrypted passowrd file. 
+echo "ILoveMyDreamsProd" |  openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}   -out ./secrets/app1_prod.key
+
+```
+
+---
+
+
+**How to Decrypt the above encrypted file to retrive the password ?**
+
+```
+# To retrive the Dev Environment passowrd from encrypted file. 
+WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_dev.key)
+echo $WEBAPIKEY
+
+# To retrive the Uat Environment passowrd from encrypted file. 
+WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_uat.key)
+echo $WEBAPIKEY
+
+# To retrive the Prod Environment passowrd from encrypted file. 
+WEBAPIKEY=$(openssl enc -aes-256-cbc -pass pass:${SomethingReallySecret}  -d -A -in ./secrets/app1_prod.key)
+echo $WEBAPIKEY
+
+```
+
+In above example we can manage the secrets via version control and need not to manage multiple passwords in jenkins credentials plugins but can use single password ${SomethingReallySecret} in there to get all the encrypted details. 
+
+
+Command related details you can get from  _[Encrypt files using AES with OPENSSL](https://medium.com/@kekayan/encrypt-files-using-aes-with-openssl-dabb86d5b748)_.
