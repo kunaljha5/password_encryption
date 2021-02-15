@@ -39,7 +39,7 @@
     
         * *Java Keystore*: 
         
-                A binary file format for use by Java applications (like the Code42 server). Typical file names are .keystore
+                A binary file format for use by Java applications. Typical file names are .keystore
                 and *.jks
     
         * *PKCS*: 
