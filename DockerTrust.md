@@ -3,7 +3,7 @@
 %%download the cert from nexus
 
 ```
-echo | openssl s_client -connect nexus.aws.netspend.net:5000 -showcerts \
+echo | openssl s_client -connect <registry-url>:5000 -showcerts \
 | openssl x509 -outform PEM | \
 sudo tee -a /etc/pki/ca-trust/source/anchors/nexus.aws.netspend.net.crt
 
